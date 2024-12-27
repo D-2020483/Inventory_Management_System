@@ -19,11 +19,12 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cors());
 //Route Import
 import dashbordRoutes from "./routes/dashboardRoutes";
-
+import ProductRoutes from "./routes/productRoutes"
 
 
 //Routes
 app.use("/dashboard" , dashbordRoutes);
+app.use("/products", ProductRoutes);
 
 
 //Servers
