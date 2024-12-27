@@ -23,9 +23,11 @@ app.use((0, cors_1.default)());
 //Route Import
 const dashboardRoutes_1 = __importDefault(require("./routes/dashboardRoutes"));
 const productRoutes_1 = __importDefault(require("./routes/productRoutes"));
+const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
 //Routes
 app.use("/dashboard", dashboardRoutes_1.default);
 app.use("/products", productRoutes_1.default);
+app.use("/users", userRoutes_1.default);
 //Servers
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
