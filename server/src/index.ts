@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
+
 //Route import
 
 
@@ -17,16 +18,19 @@ app.use(morgan("common"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cors());
+
 //Route Import
 import dashbordRoutes from "./routes/dashboardRoutes";
 import ProductRoutes from "./routes/productRoutes";
 import userRoutes from "./routes/userRoutes";
 
 
+
 //Routes
 app.use("/dashboard" , dashbordRoutes);
 app.use("/products", ProductRoutes);
 app.use("/users", userRoutes);
+
 
 
 //Servers

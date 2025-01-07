@@ -86,3 +86,11 @@ model ExpenseByCategory{
   date DateTime
   expenseSummary ExpenseSummary @relation(fields: [expenseSummaryId], references: [expenseSummaryId])
 }
+
+model User {
+  id       Int      @id @default(autoincrement())
+  username String    @unique
+  email    String   @unique
+  password String
+  createdAt DateTime @default(now())
+}
