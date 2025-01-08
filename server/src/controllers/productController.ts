@@ -77,21 +77,22 @@ export const createProduct = async(
         res.status(500).json({message: "Error updating product" })
         
     }
-}
+}*/}
 
 export const deleteProduct = async(
     req: Request,
     res: Response,
-): Promise<void> =>{
+) =>{
+
     try {
         const { productId } = req.params;
-
         const product = await prisma.products.delete({
             where: { productId },
         });
 
         if (!product){
-            res.status(404).json({message:"Product not found" })
+            res.status(404).json({message:"Product not found" });
+            return;
         }
 
         await prisma.products.delete({
@@ -100,6 +101,7 @@ export const deleteProduct = async(
 
         res.status(200).json({ message: "Product deleted successfully" });
     } catch (error) {
+        console.error("Error deleting product:", error);
         res.status(500).json({ message: "Error deleting product"});
     }
-};*/}
+};

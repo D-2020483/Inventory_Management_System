@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createProduct = exports.getProducts = void 0;
+exports.deleteProduct = exports.createProduct = exports.getProducts = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const getProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -83,30 +83,26 @@ exports.createProduct = createProduct;
         res.status(500).json({message: "Error updating product" })
         
     }
+}*/
 }
-
-export const deleteProduct = async(
-    req: Request,
-    res: Response,
-): Promise<void> =>{
+const deleteProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { productId } = req.params;
-
-        const product = await prisma.products.delete({
+        const product = yield prisma.products.delete({
             where: { productId },
         });
-
-        if (!product){
-            res.status(404).json({message:"Product not found" })
+        if (!product) {
+            res.status(404).json({ message: "Product not found" });
+            return;
         }
-
-        await prisma.products.delete({
+        yield prisma.products.delete({
             where: { productId },
         });
-
         res.status(200).json({ message: "Product deleted successfully" });
-    } catch (error) {
-        res.status(500).json({ message: "Error deleting product"});
     }
-};*/
-}
+    catch (error) {
+        console.error("Error deleting product:", error);
+        res.status(500).json({ message: "Error deleting product" });
+    }
+});
+exports.deleteProduct = deleteProduct;

@@ -86,6 +86,15 @@ export const api = createApi({
             query: () => "/users",
             providesTags: ["Users"],
         }),
+
+        deleteProduct: build.mutation({
+            query: (productId) => ({
+                url: `/products/${productId}`,
+                method: "DELETE",
+            }),
+
+        }),    
+
     }),
 });
 
@@ -94,4 +103,5 @@ export const {
     useGetProductsQuery, 
     useCreateProductMutation,
     useGetUsersQuery,
+    useDeleteProductMutation,
 } = api;
