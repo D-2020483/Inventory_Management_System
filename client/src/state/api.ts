@@ -66,10 +66,10 @@ export const api = createApi({
             query: () => "/dashboard",
             providesTags: ["DashboardMetrics"],
         }),
-        getProducts:  build.query <product[], string | void> ({
-            query: (search) => ({
+        getProducts:  build.query <product[], { search?: string; page?: number; limit?: number }> ({
+            query: ({ search = "", page = 1, limit = 20 }) => ({
                url:"/products",
-               params: search ? { search } : {}
+               params:{search, page, limit},
         }),
             providesTags: ["Products"],
         }),
@@ -93,8 +93,16 @@ export const api = createApi({
                 method: "DELETE",
             }),
 
-        }),    
-
+        }),
+        
+        updateProduct: build.mutation<product, { productId: string; updatedData: Partial<product> }>({
+            query: ({ productId, updatedData }) => ({
+              url: `/products/${productId}`,
+              method: "PATCH",
+              body: updatedData,
+            }),
+            invalidatesTags: ["Products"],
+        }),
     }),
 });
 
@@ -104,4 +112,5 @@ export const {
     useCreateProductMutation,
     useGetUsersQuery,
     useDeleteProductMutation,
+    useUpdateProductMutation,
 } = api;

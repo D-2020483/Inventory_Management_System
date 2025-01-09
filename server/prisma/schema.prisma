@@ -30,13 +30,13 @@ model Products {
 }
 
 model Sales{
-  saleId String @id
+  saleId String  @id
   productId String
   timestamp DateTime
   quantity Int
   unitPrice Float
   totalAmount Float
-  product  Products @relation(fields: [productId], references: [productId])
+  product  Products @relation(fields: [productId], references: [productId], onDelete: Cascade)
 
 }
 

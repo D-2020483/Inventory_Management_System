@@ -21,7 +21,7 @@ const Products = () => {
     const { data: Products, 
             isLoading, 
             isError
-        } = useGetProductsQuery(searchTerm);
+        } = useGetProductsQuery({search: searchTerm});
 
     const [createProduct] =  useCreateProductMutation();  
     const handleCreateProduct = async (productData: ProductFormData) => {

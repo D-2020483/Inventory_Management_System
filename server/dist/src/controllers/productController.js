@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteProduct = exports.createProduct = exports.getProducts = void 0;
+exports.deleteProduct = exports.updateProduct = exports.createProduct = exports.getProducts = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const getProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -49,53 +49,26 @@ const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.createProduct = createProduct;
-{ /*export const updateProduct = async(
-    req : Request,
-    res : Response
-): Promise<void> => {
+const updateProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { productId } = req.params;
-        const { name , price , rating, stockQuantity} = req.body;
-
-        const existingProduct = await prisma.products.findUnique ({
-            where: { productId},
-        });
-
-        if (!existingProduct) {
-            res.status(404).json({message: "Product not found"});
-            return;
-        }
-
-        const updateProduct = await prisma.products.update({
+        const { name, price, rating, stockQuantity } = req.body;
+        const updateProduct = yield prisma.products.update({
             where: { productId },
-            data: {
-                name,
-                price,
-                rating,
-                stockQuantity,
-            },
+            data: { name, price, rating, stockQuantity },
         });
-
         res.status(200).json(updateProduct);
-        
-    } catch (error) {
-
-        res.status(500).json({message: "Error updating product" })
-        
     }
-}*/
-}
+    catch (error) {
+        console.error("Error updating product:", error);
+        res.status(500).json({ message: "Error updating product" });
+    }
+});
+exports.updateProduct = updateProduct;
 const deleteProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { productId } = req.params;
-        const product = yield prisma.products.delete({
-            where: { productId },
-        });
-        if (!product) {
-            res.status(404).json({ message: "Product not found" });
-            return;
-        }
-        yield prisma.products.delete({
+        yield prisma.products.deleteMany({
             where: { productId },
         });
         res.status(200).json({ message: "Product deleted successfully" });

@@ -43,7 +43,7 @@ export const createProduct = async(
     }
 };
 
-{/*export const updateProduct = async(
+export const updateProduct = async(
     req : Request,
     res : Response
 ): Promise<void> => {
@@ -51,54 +51,30 @@ export const createProduct = async(
         const { productId } = req.params;
         const { name , price , rating, stockQuantity} = req.body;
 
-        const existingProduct = await prisma.products.findUnique ({
+        const updateProduct = await prisma.products.update ({
             where: { productId},
+            data: { name, price, rating, stockQuantity },
+
         });
-
-        if (!existingProduct) {
-            res.status(404).json({message: "Product not found"});
-            return;
-        }
-
-        const updateProduct = await prisma.products.update({
-            where: { productId },
-            data: {
-                name,
-                price,
-                rating,
-                stockQuantity,
-            },
-        });
-
         res.status(200).json(updateProduct);
         
     } catch (error) {
-
+        console.error("Error updating product:", error);
         res.status(500).json({message: "Error updating product" })
         
     }
-}*/}
+}
 
 export const deleteProduct = async(
     req: Request,
     res: Response,
 ) =>{
-
+    
     try {
         const { productId } = req.params;
-        const product = await prisma.products.delete({
+        await prisma.products.deleteMany({
             where: { productId },
         });
-
-        if (!product){
-            res.status(404).json({message:"Product not found" });
-            return;
-        }
-
-        await prisma.products.delete({
-            where: { productId },
-        });
-
         res.status(200).json({ message: "Product deleted successfully" });
     } catch (error) {
         console.error("Error deleting product:", error);
