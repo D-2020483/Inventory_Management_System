@@ -1,10 +1,11 @@
 "use client"
 
-import { useGetProductsQuery , useDeleteProductMutation , useUpdateProductMutation, product } from "@/state/api";
+import { useGetProductsQuery , useDeleteProductMutation , useUpdateProductMutation, product ,useGetInventoryReportQuery } from "@/state/api";
 import Header from "@/app/(components)/Header";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { Button, Modal, TextField } from "@mui/material";
 import { useState } from "react";
+import * as XLSX from "xlsx";
 
 
 const Inventory = () => {
@@ -17,45 +18,38 @@ const Inventory = () => {
     const [updateProduct] = useUpdateProductMutation();
     const [deleting, setDeleting] = useState(false);
     const [editProduct , setEditProduct] = useState<product | null>(null);
+    const [reportType, setReportType] = useState<string | null> (null);
+    const {data: reportData} = useGetInventoryReportQuery(reportType!,{skip: !reportType});
+
+    const handdleDownloadReport = () => {
+        if (!reportData) {
+            alert("No data available to download");
+            return;
+        }
+
+        const worksheet = XLSX.utils.json_to_sheet(reportData);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Inventory Report");
+
+        const fileName = `inventory_report_${reportType}.xlsx`;
+        XLSX.writeFile(workbook, fileName);
+    };
+
 
 const columns: GridColDef[] =[
     {field: "productId", headerName:"ID", width: 90},
     {field: "name", headerName:"Product Name", width: 200},
-    {
-        field: "price", 
-        headerName:"Price", 
-        width: 110, 
-        type: "number", 
-        valueGetter: (value, row) =>`$${row.price}`
-    },
-
-    {
-        field: "rating", 
-        headerName:"Rating", 
-        width: 110, 
-        type: "number", 
-        valueGetter: (value, row) => row.rating ? row.rating : "N/A",
-    },
-
-    {
-        field: "stockQuantity", 
-        headerName:"Stock Quantity", 
-        width: 150, 
-        type: "number", 
-    },
-
-    {
-        field: "actions",
-        headerName:"Actions",
-        width: 150,
-        renderCell: (params) => (
+    {field: "price", headerName:"Price", width: 110, type: "number", valueGetter: (value, row) =>`$${row.price}`},
+    {field: "rating", headerName:"Rating", width: 110, type: "number", valueGetter: (value, row) => row.rating ? row.rating : "N/A"},
+    {field: "stockQuantity", headerName:"Stock Quantity", width: 150, type: "number"},
+    {field: "actions",headerName:"Actions",width: 150,renderCell: (params) => (
             <div>
             <Button 
                 variant="contained"
                 size="small"
                 onClick={() => setEditProduct(params.row)}
             > 
-            <button type = "button" className="mt-1 px-1 py-0">
+            <button type = "button" className="mt-2 px-2 py-0">
                Update
             </button>
             </Button>
@@ -66,7 +60,7 @@ const columns: GridColDef[] =[
                 disabled={deleting}
                 onClick={() => handleDelete(params.row.productId)}
             >
-               <button type = "button" className="mt-1 px-1 py-0">
+               <button type = "button"className="mt-2 px-2 py-0">
                Delete
             </button>
             </Button>
@@ -122,6 +116,28 @@ const handleUpdate = async() => {
   return (
   <div className="flex flex-col">
     <Header name = "Inventory" />
+    <div className="flex justify-end gap-4 my-4">
+        <Button variant="contained" color="primary" onClick={() =>{
+            setReportType("daily");
+            handdleDownloadReport();
+        }}
+        >
+           Download Daily Report
+        </Button>
+        <Button variant="contained" color="primary" onClick={() => {
+            setReportType("weekly");
+            handdleDownloadReport()
+        }}
+        >
+           Download weekly Report
+        </Button>
+        <Button variant="contained" color="primary" onClick={() => {
+            setReportType("monthly");
+            handdleDownloadReport()
+        }}>
+           Download Monthly Report
+        </Button>
+    </div>
     <DataGrid 
        rows={products}
        columns={columns}

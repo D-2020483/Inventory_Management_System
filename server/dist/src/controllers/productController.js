@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteProduct = exports.updateProduct = exports.createProduct = exports.getProducts = void 0;
+exports.getInventoryReport = exports.deleteProduct = exports.updateProduct = exports.createProduct = exports.getProducts = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const getProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -79,3 +79,38 @@ const deleteProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.deleteProduct = deleteProduct;
+const getInventoryReport = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { type } = req.query;
+        const now = new Date();
+        let startDate;
+        if (type === "daily") {
+            startDate = new Date(now);
+            startDate.setHours(0, 0, 0, 0);
+        }
+        else if (type === "weekly") {
+            startDate = new Date(now);
+            startDate.setDate(now.getDate() - now.getDate());
+            startDate.setHours(0, 0, 0, 0);
+        }
+        else if (type === "Monthly") {
+            startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+        }
+        else {
+            res.status(400).json({ message: "Invalid report type" });
+        }
+        const inventoryData = yield prisma.products.findMany({
+            where: {
+                createdAt: {
+                    gte: startDate,
+                },
+            }
+        });
+        res.status(200).json(inventoryData);
+    }
+    catch (error) {
+        console.error("Error generating report:", error);
+        res.status(500).json({ message: "Error generating report" });
+    }
+});
+exports.getInventoryReport = getInventoryReport;

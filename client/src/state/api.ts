@@ -103,6 +103,9 @@ export const api = createApi({
             }),
             invalidatesTags: ["Products"],
         }),
+        getInventoryReport:build.query({
+            query: (type) => `/products/inventory-report?type=${type}`,
+        })
     }),
 });
 
@@ -113,4 +116,5 @@ export const {
     useGetUsersQuery,
     useDeleteProductMutation,
     useUpdateProductMutation,
+    useGetInventoryReportQuery
 } = api;

@@ -27,6 +27,7 @@ model Products {
   stockQuantity Int
   Sales Sales[]
   Purchases  Purchases[]
+  createdAt DateTime @default(now())
 }
 
 model Sales{
@@ -89,8 +90,13 @@ model ExpenseByCategory{
 
 model User {
   id       Int      @id @default(autoincrement())
-  username String    @unique
+  name     String    @unique
   email    String   @unique
   password String
-  createdAt DateTime @default(now())
+  role     Role      @default(USER)
+}
+
+enum Role {
+  ADMIN
+  USER
 }
