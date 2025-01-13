@@ -23,6 +23,7 @@ app.use(cors());
 import dashbordRoutes from "./routes/dashboardRoutes";
 import ProductRoutes from "./routes/productRoutes";
 import userRoutes from "./routes/userRoutes";
+import expenseRoutes from "./routes/expenseRoutes";
 
 
 
@@ -30,6 +31,7 @@ import userRoutes from "./routes/userRoutes";
 app.use("/dashboard" , dashbordRoutes);
 app.use("/products", ProductRoutes);
 app.use("/users", userRoutes);
+app.use("/expenses", expenseRoutes);
 app.use("/api", ProductRoutes);
 app.use('/api', userRoutes);
 

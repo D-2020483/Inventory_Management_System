@@ -24,10 +24,12 @@ app.use((0, cors_1.default)());
 const dashboardRoutes_1 = __importDefault(require("./routes/dashboardRoutes"));
 const productRoutes_1 = __importDefault(require("./routes/productRoutes"));
 const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
+const expenseRoutes_1 = __importDefault(require("./routes/expenseRoutes"));
 //Routes
 app.use("/dashboard", dashboardRoutes_1.default);
 app.use("/products", productRoutes_1.default);
 app.use("/users", userRoutes_1.default);
+app.use("/expenses", expenseRoutes_1.default);
 app.use("/api", productRoutes_1.default);
 app.use('/api', userRoutes_1.default);
 //Servers

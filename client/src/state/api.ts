@@ -60,7 +60,7 @@ export interface User {
 export const api = createApi({
     baseQuery: fetchBaseQuery({ baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL }),
     reducerPath: "api" ,
-    tagTypes:["DashboardMetrics","Products","Users"],
+    tagTypes:["DashboardMetrics","Products","Users" , "Expenses"],
     endpoints: (build) => ({
         //Dashbord Metrics
         getDashboardMetrics: build.query <DashboardMetrics, void> ({
@@ -110,26 +110,10 @@ export const api = createApi({
         getInventoryReport:build.query<any, { type: string}>({
             query: (type) => `/products/inventory-report?type=${type}`,
         }),
-        //Sign_Up
-        signup: build.mutation<void, { name: string; email: string; password: string }>({
-            query: (body) => ({
-                url: "/users/signup",
-                method: "POST",
-                body,
-            }),
-            invalidatesTags: ["Users"],
-
-        }),
-        //Sign_In
-        signin: build.mutation<
-        { token: string; user: User },
-        { email: string; password: string }>({
-            query: (body) => ({
-                url: "/users/signin",
-                method: "POST",
-                body,
-            }),
-
+        //get expenses
+        getExpensesByCategory: build.query <ExpenseByCategorySummary[], void> ({
+            query: () => "/expenses",
+            providesTags: ["Expenses"]
         }),
     }),
 });
@@ -142,6 +126,5 @@ export const {
     useDeleteProductMutation,
     useUpdateProductMutation,
     useGetInventoryReportQuery,
-    useSignupMutation,
-    useSigninMutation
+    useGetExpensesByCategoryQuery,
 } = api;

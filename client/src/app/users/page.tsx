@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetUsersQuery } from "@/state/api";
+import {useGetUsersQuery } from "@/state/api";
 import Header from "@/app/(components)/Header";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 
@@ -8,9 +8,9 @@ const columns: GridColDef[] = [
   { field: "userId", headerName: "ID", width: 90 },
   { field: "name", headerName: "Name", width: 200 },
   { field: "email", headerName: "Email", width: 200 },
-];
+]  
 
-const Users = () => {
+const  Users= () => {
   const { data: users, isError, isLoading } = useGetUsersQuery();
 
   if (isLoading) {
@@ -19,7 +19,9 @@ const Users = () => {
 
   if (isError || !users) {
     return (
-      <div className="text-center text-red-500 py-4">Failed to fetch users</div>
+      <div className="text-center text-red-500 py-4">
+        Failed to fetch users
+      </div>
     );
   }
 

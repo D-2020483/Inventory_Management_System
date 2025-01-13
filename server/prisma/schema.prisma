@@ -55,11 +55,11 @@ model Purchases{
 }
 
 model Expenses{
-  expenseId String @id
+  expenseId String @id @default(uuid()) @db.Uuid
   category String
   amount Float
   timestamp DateTime
-  expenseSummaryId String?
+  expenseSummaryId String? @db.Uuid
 }
 model SalesSummary {
   salesSummaryId String @id
