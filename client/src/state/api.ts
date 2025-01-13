@@ -62,10 +62,12 @@ export const api = createApi({
     reducerPath: "api" ,
     tagTypes:["DashboardMetrics","Products","Users"],
     endpoints: (build) => ({
+        //Dashbord Metrics
         getDashboardMetrics: build.query <DashboardMetrics, void> ({
             query: () => "/dashboard",
             providesTags: ["DashboardMetrics"],
         }),
+        //Get Products
         getProducts:  build.query <product[], { search?: string; page?: number; limit?: number }> ({
             query: ({ search = "", page = 1, limit = 20 }) => ({
                url:"/products",
@@ -73,7 +75,7 @@ export const api = createApi({
         }),
             providesTags: ["Products"],
         }),
-
+        //Create Product
         createProduct : build.mutation<product, NewProduct>({
             query: (newProduct) => ({
                 url:"/products",
@@ -82,19 +84,20 @@ export const api = createApi({
          }),
          invalidatesTags: ["Products"]
         }),
+        //Get Users
         getUsers: build.query <User[], void> ({
             query: () => "/users",
-            providesTags: ["Users"],
         }),
-
-        deleteProduct: build.mutation({
+        //Delete Product
+        deleteProduct: build.mutation<void, string>({
             query: (productId) => ({
                 url: `/products/${productId}`,
                 method: "DELETE",
             }),
+            invalidatesTags: ["Products"],
 
         }),
-        
+        //Update Product
         updateProduct: build.mutation<product, { productId: string; updatedData: Partial<product> }>({
             query: ({ productId, updatedData }) => ({
               url: `/products/${productId}`,
@@ -103,9 +106,31 @@ export const api = createApi({
             }),
             invalidatesTags: ["Products"],
         }),
-        getInventoryReport:build.query({
+        //Get Reports
+        getInventoryReport:build.query<any, { type: string}>({
             query: (type) => `/products/inventory-report?type=${type}`,
-        })
+        }),
+        //Sign_Up
+        signup: build.mutation<void, { name: string; email: string; password: string }>({
+            query: (body) => ({
+                url: "/users/signup",
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["Users"],
+
+        }),
+        //Sign_In
+        signin: build.mutation<
+        { token: string; user: User },
+        { email: string; password: string }>({
+            query: (body) => ({
+                url: "/users/signin",
+                method: "POST",
+                body,
+            }),
+
+        }),
     }),
 });
 
@@ -116,5 +141,7 @@ export const {
     useGetUsersQuery,
     useDeleteProductMutation,
     useUpdateProductMutation,
-    useGetInventoryReportQuery
+    useGetInventoryReportQuery,
+    useSignupMutation,
+    useSigninMutation
 } = api;

@@ -25,7 +25,6 @@ const Settings = () => {
     settingsCopy[index].value = !settingsCopy[index].value as boolean;
     setUserSettings(settingsCopy);
   };
-
   return (
     <div className="w-full">
       <Header name="User Settings" />

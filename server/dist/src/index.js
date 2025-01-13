@@ -29,6 +29,7 @@ app.use("/dashboard", dashboardRoutes_1.default);
 app.use("/products", productRoutes_1.default);
 app.use("/users", userRoutes_1.default);
 app.use("/api", productRoutes_1.default);
+app.use('/api', userRoutes_1.default);
 //Servers
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

@@ -31,6 +31,7 @@ app.use("/dashboard" , dashbordRoutes);
 app.use("/products", ProductRoutes);
 app.use("/users", userRoutes);
 app.use("/api", ProductRoutes);
+app.use('/api', userRoutes);
 
 
 

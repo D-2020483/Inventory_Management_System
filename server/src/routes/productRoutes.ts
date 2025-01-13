@@ -9,4 +9,5 @@ router.delete("/:productId" , deleteProduct);
 router.patch('/:productId', updateProduct);
 router.get("/inventory-report", getInventoryReport );
 
+
 export default router;
