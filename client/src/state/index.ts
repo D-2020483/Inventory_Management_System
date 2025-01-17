@@ -39,6 +39,8 @@ export const globalSlice = createSlice({
 });
 
 
+
+
 export const { setIsSidebarCollapsed, setIsDarkMode ,setUser , clearUser} = globalSlice.actions;
 
 export default globalSlice.reducer;
