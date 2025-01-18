@@ -2,6 +2,7 @@
 
 import { useAppDispatch, useAppSelector } from "@/app/redux";
 import { setIsDarkMode, setIsSidebarCollapsed } from "@/state";
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { Bell, Menu, Moon, Settings, Sun } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -70,14 +71,22 @@ const Navbar: React.FC<NavbarProps> = (props) => {
           </div>
           <hr className="w-0 h-7 border border-solid border-l border-gray-300 mx-3" />
           <div className="flex items-center gap-3 cursor-pointer">
-            {props.name ? (
-              <p>Hi, {props.name}</p>
-            ) : (
-              <nav className="flex items-center gap-4">
-                <Link href="/sign-in">Sign-In</Link>
-                <Link href="/sign-up">Sign-Up</Link>
-              </nav>
-            )}
+          <SignedOut>
+        {
+          !props.name && (
+          <div className="flex items-center gap-4">
+              <Link href="/sign-in" className="text-primary">
+              Sign-In
+              </Link>
+              <Link href="/sign-up" className="text-primary">
+              Sign-Up
+              </Link>
+          </div>
+          )}
+        </SignedOut>
+        <SignedIn>
+        <UserButton/>
+        </SignedIn>
           </div>
         </div>
         <Link href="/settings">

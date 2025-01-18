@@ -8,8 +8,8 @@ import SignInPage from "@/components/sign-in.page";
 
 export default function Home() {
   return (
-    <div>
-      <SignInPage />
-    </div>
+    <main className="flex items-center justify-center px-4 min-h-screen">
+      <SignInPage/>
+    </main>
   );
 }

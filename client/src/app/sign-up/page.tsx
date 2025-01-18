@@ -6,8 +6,8 @@ import SignUpPage from "@/components/sign-up.page";
 
 export default function Home() {
   return (
-    <div>
-        <SignUpPage />
-    </div>
+    <main className="flex items-center justify-center px-4 min-h-screen">
+        <SignUpPage/>
+    </main>
   );
 }
